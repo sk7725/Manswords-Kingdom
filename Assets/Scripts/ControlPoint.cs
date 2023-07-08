@@ -5,13 +5,15 @@ using UnityEngine.EventSystems;
 
 public class ControlPoint : MonoBehaviour {
     [Header("Settings")]
-    [SerializeField] private float dragPower = 5000;
-    [SerializeField] private float snapPower = 10000;
-    [SerializeField] private Color dragColor = Color.cyan, snapColor = Color.yellow;
+    [SerializeField] private float dragPower = 10000;
+    [SerializeField] private float shiftPower = 2000;
+    [SerializeField] private float focusSpeed = 60f;
+    public Color dragColor = Color.cyan, shiftColor = Color.yellow, focusColor = Color.red;
 
     [Header("Physics")]
     public Rigidbody2D rigid;
     public RelativeJoint2D jointToSword;
+    public Sword sword;
 
     [Header("UI")]
     [SerializeField] private LineRenderer line;
@@ -25,16 +27,21 @@ public class ControlPoint : MonoBehaviour {
     public enum ControlState {
         Idle,
         Drag,
-        Snap
+        Shift,
+        Focus
     }
 
     private void Start() {
         cam = Camera.main;
         mouseOverUI = false;
+
         SetDragPower(0);
+        sword.render.arrow.color = focusColor;
+        sword.render.arrow.enabled = false;
     }
 
     void Update() {
+        //input
         if (Input.GetMouseButtonDown(0)) {
             mouseOverUI = EventSystem.current.IsPointerOverGameObject();
         }
@@ -42,25 +49,53 @@ public class ControlPoint : MonoBehaviour {
             mouseOverUI = false;
         }
 
+        //set state
         bool mouseDown = IsMouseDown();
         if (mouseDown) {
-            if (ShouldSnapPosition()) {
-                state = ControlState.Snap;
+            if (IsShiftDown()) {
+                state = ControlState.Shift;
             }
             else {
                 state = ControlState.Drag;
             }
         }
         else {
-            state = ControlState.Idle;
+            if (IsFocusDown()) {
+                state = ControlState.Focus;
+            }
+            else {
+                state = ControlState.Idle;
+            }
         }
 
+        //drag
         if (mouseDown) {
             rigid.position = CursorPosition();
+            line.SetPosition(0, sword.transform.position);
             line.SetPosition(1, rigid.position);
         }
 
+        //focus
+        if(state == ControlState.Focus) {
+            float target = Vector2.SignedAngle(Vector2.right, CursorPosition() - sword.transform.position);
+            float angle = Mathf.LerpAngle(sword.rigid.rotation, target, focusSpeed * Time.deltaTime);
+            //attempt to move player
+            Vector3 diff = GameManager.main.player.transform.position - sword.transform.position;
+            diff = diff.Rotate2DBy(angle);
+            GameManager.main.player.rigid.MovePosition(sword.transform.position + diff);
+            GameManager.main.player.rigid.SetRotation(angle);
+
+            //move sword
+            sword.rigid.SetRotation(angle);
+            sword.render.arrow.enabled = true;
+        }
+        else {
+            sword.render.arrow.enabled = false;
+        }
+
+        //drag power and ui
         switch (state) {
+            case ControlState.Focus:
             case ControlState.Idle:
                 SetDragPower(0);
                 line.enabled = false;
@@ -70,24 +105,30 @@ public class ControlPoint : MonoBehaviour {
                 line.enabled = true;
                 SetLineColor(dragColor);
                 break;
-            case ControlState.Snap:
-                SetDragPower(snapPower);
+            case ControlState.Shift:
+                SetDragPower(shiftPower);
                 line.enabled = true;
-                SetLineColor(snapColor);
+                SetLineColor(shiftColor);
                 break;
         }
     }
 
     private Vector3 CursorPosition() {
-        return cam.ScreenToWorldPoint(Input.mousePosition);
+        var wp = cam.ScreenToWorldPoint(Input.mousePosition);
+        return new Vector3(wp.x, wp.y, 0f);
     }
 
     private bool IsMouseDown() {
-        return !mouseOverUI && (Input.GetMouseButton(0) || Input.GetMouseButton(1));
+        return !mouseOverUI && Input.GetMouseButton(0);
     }
 
-    private bool ShouldSnapPosition() {
-        return !mouseOverUI && Input.GetMouseButton(1);
+    private bool IsFocusDown() {
+        //return !mouseOverUI && Input.GetMouseButton(1);
+        return false;
+    }
+
+    private bool IsShiftDown() {
+        return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
     }
 
     private void SetDragPower(float power) {
