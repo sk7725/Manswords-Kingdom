@@ -12,10 +12,10 @@ TagManager:
   - 
   - Water
   - UI
+  - Wall
   - 
-  - 
-  - 
-  - 
+  - PlayerSword
+  - Player
   - 
   - 
   - 
@@ -41,4 +41,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Sword
+    uniqueID: 1558646805
+    locked: 0
+  - name: Characters
+    uniqueID: 2073358405
+    locked: 0
+  - name: Projectile
+    uniqueID: 2754329307
+    locked: 0
+  - name: UnderUI
+    uniqueID: 2247853033
+    locked: 0
+  - name: UI
+    uniqueID: 3582492705
     locked: 0
