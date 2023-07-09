@@ -8,16 +8,23 @@ public class Projectile : MonoBehaviour {
 
     [SerializeField] private int damage = 10;
     [SerializeField] private float speed = 3f;
+    [SerializeField] private float lifetime = 3f;
+    [SerializeField] private float knockback = 5f;
 
     [Header("Fx")]
-    [SerializeField] private GameObject spawnFx, despawnFx, hitSwordFx;
+    [SerializeField] private GameObject spawnFx;
+    [SerializeField] private GameObject despawnFx;
+    [SerializeField] private GameObject hitSwordFx;
 
     [Header("Events")]
-    [SerializeField] private ProjectileDespawnEvent onDespawn;
+    [SerializeField] private ProjectileDespawnEvent onDespawn = new();
 
+    private float time = 0f;
+
+    [System.Serializable]
     public class ProjectileDespawnEvent: UnityEvent { }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
             HitPlayer(GameManager.main.player);
         }
@@ -32,10 +39,17 @@ public class Projectile : MonoBehaviour {
     protected virtual void Start() {
         rigid.velocity = new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * speed, Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * speed);
         gameObject.PlayFx(spawnFx);
+        time = 0f;
+    }
+
+    protected virtual void Update() {
+        time += Time.deltaTime;
+        if (time > lifetime) Despawn();
     }
 
     public virtual void HitPlayer(Player player) {
         player.Damage(damage);
+        player.rigid.velocity = rigid.velocity.normalized * knockback;
         Despawn();
     }
 
@@ -52,5 +66,6 @@ public class Projectile : MonoBehaviour {
     public virtual void Despawn() {
         onDespawn.Invoke();
         gameObject.PlayFx(despawnFx);
+        Destroy(gameObject);
     }
 }

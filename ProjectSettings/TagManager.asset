@@ -7,6 +7,7 @@ TagManager:
   - Sword
   - Enemy
   - Ground
+  - EnemyHitbox
   layers:
   - Default
   - TransparentFX
@@ -18,9 +19,9 @@ TagManager:
   - 
   - PlayerSword
   - Player
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyHitbox
+  - EnemySwordInhibitor
   - 
   - 
   - 
@@ -55,6 +56,9 @@ TagManager:
     locked: 0
   - name: Projectile
     uniqueID: 2754329307
+    locked: 0
+  - name: Fx
+    uniqueID: 849759861
     locked: 0
   - name: UnderUI
     uniqueID: 2247853033

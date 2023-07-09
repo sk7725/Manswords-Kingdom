@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Spawner : MonoBehaviour {
     [System.Serializable]
@@ -26,12 +27,21 @@ public class Spawner : MonoBehaviour {
     public SpawnData[] emitter = { };
     public float reloadTime = 3f;
     public bool repeat = true;
+    public bool destroyOnStop = false;
+
+    public SpawnEvent onSpawnStart = new();
+
+    [System.Serializable]
+    public class SpawnEvent : UnityEvent { }
 
     private float _reload;
 
     private void Start() {
         Spawn(emitter, transform.rotation.eulerAngles.z);
-        if(!repeat) Destroy(gameObject);
+        if (!repeat) {
+            if(destroyOnStop) Destroy(gameObject);
+            else enabled = false;
+        }
         else _reload = reloadTime;
     }
 
@@ -44,6 +54,7 @@ public class Spawner : MonoBehaviour {
     }
 
     public void Spawn(SpawnData[] emitter, float angleOffset) {
+        onSpawnStart.Invoke();
         StartCoroutine(ISpawn(emitter, angleOffset));
     }
 
@@ -71,6 +82,21 @@ public class Spawner : MonoBehaviour {
 
     public void Spawn(NestedSpawnData[] emitter, float angleOffset) {
         StartCoroutine(ISpawnNested(emitter, angleOffset));
+    }
+
+    public void Stop() {
+        if (destroyOnStop) Destroy(gameObject);
+        else enabled = false;
+    }
+
+    public void Play() {
+        enabled = true;
+        Spawn(emitter, transform.rotation.eulerAngles.z);
+        if (!repeat) {
+            if (destroyOnStop) Destroy(gameObject);
+            else enabled = false;
+        }
+        else _reload = reloadTime;
     }
 
     IEnumerator ISpawnNested(NestedSpawnData[] emitter, float angleOffset) {
