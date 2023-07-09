@@ -5,40 +5,70 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     [Header("Settings")]
     public Rigidbody2D rigid;
+    public PlayerRenderer render;
+
     public int maxHealth = 100;
     public float minimumDamageThreshold2 = 1f;
     public float velocityDamageScale = 5f;
     public float velocityDamageStart = 15f;
     public float velocityDamageMax = 30f;
 
+    [Header("Fx")]
+    [SerializeField] private GameObject damageFx;
+    [SerializeField] private GameObject healFx;
+    [SerializeField] private GameObject deathFx;
+
     private int hp = 100;
+    private bool dead = false;
+
     public int Health => hp;
+    public float HealthFraction {
+        get { return hp / (float)maxHealth; }
+    }
 
     private void Start() {
         hp = maxHealth;
+        dead = false;
     }
 
     private void Update() {
         //Debug.Log($"VEL: {rigid.velocity.sqrMagnitude} DMG: {GetVelocityDamage()}");
     }
 
-    public void Damage(int damage) {
-        //todo
+    public void Damage(int damage, Vector3? point = null) {
+        if (dead) return;
         hp -= damage;
+
+        if (point.HasValue) {
+            Fx.Play(damageFx, point.Value);
+        }
+        else {
+            Fx.Play(damageFx, transform.position + new Vector3(Random.Range(-0.4f, 0.4f), Random.Range(-0.4f, 0.4f), 0));
+        }
+
         if(hp <= 0) {
             Kill();
+        }
+        else {
+            render.Hurt();
         }
     }
 
     public void Heal(int heal) {
-        //todo
+        if (dead) return;
         hp += heal;
         if(hp > maxHealth) hp = maxHealth;
+        render.SetFaceFor(4, 1.5f);
+        gameObject.PlayFx(healFx);
     }
 
     public void Kill() {
+        if(dead) return;
         hp = 0;
-        //todo
+        dead = true;
+        render.gameObject.SetActive(false);
+        Fx.Play(deathFx, transform.position);
+        GameManager.main.GameOver();
     }
 
     public float GetVelocityDamage() {

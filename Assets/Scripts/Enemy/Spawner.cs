@@ -28,18 +28,30 @@ public class Spawner : MonoBehaviour {
     public float reloadTime = 3f;
     public bool repeat = true;
     public bool destroyOnStop = false;
+    public bool updateRotation = false;
 
+    public float chargeDuration = -1;
+    public GameObject chargeFx, chargeFx2;
+    public float chargeOffset = 0.5f;
+
+    public ChargeEvent onCharge = new();
     public SpawnEvent onSpawnStart = new();
+    public SpawnEndEvent onSpawnEnd = new();
 
     [System.Serializable]
     public class SpawnEvent : UnityEvent { }
+    [System.Serializable]
+    public class ChargeEvent : UnityEvent { }
+    [System.Serializable]
+    public class SpawnEndEvent : UnityEvent { }
 
-    private float _reload;
+    private float _reload, _rotation;
+    private GameObject _lastChargeFx1, _lastChargeFx2;
 
     private void Start() {
-        Spawn(emitter, transform.rotation.eulerAngles.z);
         if (!repeat) {
-            if(destroyOnStop) Destroy(gameObject);
+            Spawn(emitter, 0f);
+            if (destroyOnStop) Destroy(gameObject);
             else enabled = false;
         }
         else _reload = reloadTime;
@@ -48,17 +60,32 @@ public class Spawner : MonoBehaviour {
     private void Update() {
         _reload -= Time.deltaTime;
         if (_reload <= 0) {
-            Spawn(emitter, transform.rotation.eulerAngles.z);
+            Spawn(emitter, 0f);
             _reload = reloadTime;
         }
     }
 
     public void Spawn(SpawnData[] emitter, float angleOffset) {
-        onSpawnStart.Invoke();
         StartCoroutine(ISpawn(emitter, angleOffset));
     }
 
     IEnumerator ISpawn(SpawnData[] emitter, float angleOffset) {
+        _rotation = transform.rotation.eulerAngles.z;
+        onCharge.Invoke();
+
+        //charge
+        if (chargeDuration > 0) {
+            _lastChargeFx1 = Fx.PlayAsChild(chargeFx, transform);
+            _lastChargeFx2 = Fx.PlayAsChild(chargeFx2, transform);
+            if (_lastChargeFx1 != null) _lastChargeFx1.transform.position += transform.right * chargeOffset;
+            if (_lastChargeFx2 != null) _lastChargeFx2.transform.position += transform.right * chargeOffset;
+
+            yield return new WaitForSeconds(chargeDuration);
+        }
+
+        onSpawnStart.Invoke();
+
+        //shoot
         for (int i = 0; i < emitter.Length; i++) {
             var e = emitter[i];
             if(e.startDelay > 0.01f) {
@@ -78,6 +105,8 @@ public class Spawner : MonoBehaviour {
                 }
             }
         }
+
+        onSpawnEnd.Invoke();
     }
 
     public void Spawn(NestedSpawnData[] emitter, float angleOffset) {
@@ -86,13 +115,17 @@ public class Spawner : MonoBehaviour {
 
     public void Stop() {
         if (destroyOnStop) Destroy(gameObject);
-        else enabled = false;
+        else {
+            if(_lastChargeFx1 != null) Destroy(_lastChargeFx1);
+            if(_lastChargeFx2 != null) Destroy(_lastChargeFx2);
+            enabled = false;
+        }
     }
 
     public void Play() {
         enabled = true;
-        Spawn(emitter, transform.rotation.eulerAngles.z);
         if (!repeat) {
+            Spawn(emitter, 0f);
             if (destroyOnStop) Destroy(gameObject);
             else enabled = false;
         }
@@ -122,6 +155,7 @@ public class Spawner : MonoBehaviour {
     }
 
     private void SpawnSingle(GameObject prefab, float angle) {
-        Instantiate(prefab, transform.position, Quaternion.Euler(0, 0, angle));
+        if (updateRotation) _rotation = transform.rotation.eulerAngles.z;
+        Instantiate(prefab, transform.position, Quaternion.Euler(0, 0, angle + _rotation));
     }
 }

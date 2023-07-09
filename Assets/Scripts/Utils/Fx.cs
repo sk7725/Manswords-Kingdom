@@ -11,4 +11,9 @@ public static class Fx {
         if (prefab == null) return null;
         return GameObject.Instantiate(prefab, position, rotation);
     }
+
+    public static GameObject PlayAsChild(GameObject prefab, Transform parent) {
+        if (prefab == null) return null;
+        return GameObject.Instantiate(prefab, parent);
+    }
 }

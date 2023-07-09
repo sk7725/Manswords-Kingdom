@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour {
 
     [Header("Fx")]
     [SerializeField] private GameObject destroyFx;
+    [SerializeField] private GameObject hitFx;
 
     [Header("Events")]
     public EnemyDeathEvent onDeath = new();
@@ -29,7 +30,9 @@ public class Enemy : MonoBehaviour {
 
     private float health = 30f;
     private bool dead = false;
-    private Vector2 vel;
+    public Vector2 vel;
+    public Vector2 move;
+    private Color _blackColor;
 
     public bool Alive { get { return !dead; } }
 
@@ -37,7 +40,8 @@ public class Enemy : MonoBehaviour {
         health = maxHealth;
         dead = false;
         col.enabled = true;
-        vel = Vector2.zero;
+        vel = move = Vector2.zero;
+        _blackColor = sprite.sharedMaterial.color;
     }
 
     private void Update() {
@@ -48,7 +52,8 @@ public class Enemy : MonoBehaviour {
 
     private void FixedUpdate() {
         vel *= selfResistance;
-        rigid.MovePosition(transform.position + (Vector3)vel);
+        rigid.MovePosition(transform.position + (Vector3)vel + (Vector3)move);
+        move = Vector2.zero;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -73,6 +78,7 @@ public class Enemy : MonoBehaviour {
             health -= dmg;
             //take knockback
             vel = player.rigid.velocity.normalized * selfKnockback;
+            gameObject.PlayFx(hitFx);
             if (health <= 0) Kill();
             else {
                 StopAllCoroutines();
@@ -93,7 +99,7 @@ public class Enemy : MonoBehaviour {
     public virtual void Kill() {
         if (dead) return;
         StopAllCoroutines();
-        sprite.material.color = Color.black;
+        sprite.material.color = _blackColor;
         dead = true;
         health = 0;
         col.enabled = false;
@@ -117,7 +123,7 @@ public class Enemy : MonoBehaviour {
         for (int i = 0; i < 3; i++) {
             sprite.material.color = c;
             yield return _waiter;
-            sprite.material.color = Color.black;
+            sprite.material.color = _blackColor;
             yield return _waiter;
         }
     }

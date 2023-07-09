@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour {
     }
 
     public virtual void HitPlayer(Player player) {
-        player.Damage(damage);
+        player.Damage(damage, transform.position);
         player.rigid.velocity = rigid.velocity.normalized * knockback;
         Despawn();
     }
