@@ -51,10 +51,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 3347773969675875947}
-  damage: 15
+  damage: 10
   speed: 8
   lifetime: 6
   knockback: 5
+  acceleration: -1
   spawnFx: {fileID: 0}
   despawnFx: {fileID: 456534354621891579, guid: dcb8c90eb86bf464b91a8b0c9ffb84a6, type: 3}
   hitSwordFx: {fileID: 456534354621891579, guid: dc62a40d18dde3a4a8d1d31c5a452e4e, type: 3}

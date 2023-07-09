@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     public List<EnemySpawnData> enemyPool = new List<EnemySpawnData>();
     public Transform[] spawnPoints = { };
 
-    public GameObject summonFx;
+    public GameObject summonFx, gameOverPanel;
     [SerializeField] private GameObject swordDeathFx;
     [SerializeField] private float deathDelay = 0.9f;
 
@@ -104,5 +104,6 @@ public class GameManager : MonoBehaviour {
 
     public void End() {
         //todo show gameover UI
+        gameOverPanel.SetActive(true);
     }
 }

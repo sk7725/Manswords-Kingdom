@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bat
   m_EditorClassIdentifier: 
   enemy: {fileID: 4524206786653210518, guid: cda7d53c9c8ba5e4482a1cb0aa0c980c, type: 3}
-  elite: {fileID: 7370451308995105134, guid: adb41d51512543046887083de88f1e97, type: 3}
+  elite: {fileID: 3455219471467359116, guid: 69a052bb71e02a5478b5d3e824080e67, type: 3}
   firstRelease: 30
   eliteChance: 0.05
-  eliteChanceMax: 0.2
+  eliteChanceMax: 0.1
