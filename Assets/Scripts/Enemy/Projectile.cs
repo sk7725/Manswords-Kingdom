@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour {
     [SerializeField] private float speed = 3f;
     [SerializeField] private float lifetime = 3f;
     [SerializeField] private float knockback = 5f;
+    [SerializeField] private float acceleration = -1f;
 
     [Header("Fx")]
     [SerializeField] private GameObject spawnFx;
@@ -44,6 +45,10 @@ public class Projectile : MonoBehaviour {
 
     protected virtual void Update() {
         time += Time.deltaTime;
+        if (acceleration > 0f) {
+            float s = Time.deltaTime * acceleration;
+            rigid.velocity += new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * s, Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad) * s);
+        }
         if (time > lifetime) Despawn();
     }
 

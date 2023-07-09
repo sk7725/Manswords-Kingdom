@@ -26,9 +26,12 @@ public class Spawner : MonoBehaviour {
 
     public SpawnData[] emitter = { };
     public float reloadTime = 3f;
+    public float firstReloadMultiplier = 0.4f;
     public bool repeat = true;
     public bool destroyOnStop = false;
     public bool updateRotation = false;
+    public bool overrideRotation = false;
+    public float overrideRotationValue = 0f;
 
     public float chargeDuration = -1;
     public GameObject chargeFx, chargeFx2;
@@ -54,7 +57,7 @@ public class Spawner : MonoBehaviour {
             if (destroyOnStop) Destroy(gameObject);
             else enabled = false;
         }
-        else _reload = reloadTime;
+        else _reload = reloadTime * firstReloadMultiplier;
     }
 
     private void Update() {
@@ -70,7 +73,7 @@ public class Spawner : MonoBehaviour {
     }
 
     IEnumerator ISpawn(SpawnData[] emitter, float angleOffset) {
-        _rotation = transform.rotation.eulerAngles.z;
+        _rotation = overrideRotation? overrideRotationValue : transform.rotation.eulerAngles.z;
         onCharge.Invoke();
 
         //charge
@@ -129,7 +132,7 @@ public class Spawner : MonoBehaviour {
             if (destroyOnStop) Destroy(gameObject);
             else enabled = false;
         }
-        else _reload = reloadTime;
+        else _reload = reloadTime * firstReloadMultiplier;
     }
 
     IEnumerator ISpawnNested(NestedSpawnData[] emitter, float angleOffset) {
@@ -155,7 +158,7 @@ public class Spawner : MonoBehaviour {
     }
 
     private void SpawnSingle(GameObject prefab, float angle) {
-        if (updateRotation) _rotation = transform.rotation.eulerAngles.z;
+        if (updateRotation) _rotation = overrideRotation ? overrideRotationValue : transform.rotation.eulerAngles.z;
         Instantiate(prefab, transform.position, Quaternion.Euler(0, 0, angle + _rotation));
     }
 }
