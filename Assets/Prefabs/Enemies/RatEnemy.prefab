@@ -82,7 +82,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7754156223521474856}
+  - {fileID: 7059406887791371886}
   - {fileID: 7444476768996959158}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -103,14 +103,14 @@ MonoBehaviour:
   col: {fileID: 7444476769540501214}
   sprite: {fileID: 7754156223521474870}
   animator: {fileID: 7754156223521474871}
-  maxHealth: 30
+  maxHealth: 15
   knockback: 4
   selfKnockback: 0.2
   selfResistance: 0.9
   despawnTime: 0.5
-  deathAnimation: 
+  deathAnimation: Death
   attackAnimation: Attack
-  destroyFx: {fileID: 456534354621891579, guid: 7495cb57368e2b045a56636105eb630c, type: 3}
+  destroyFx: {fileID: 456534354621891579, guid: 6fed219aaf4448045b97ff51770f3109, type: 3}
   hitFx: {fileID: 456534354621891579, guid: 34c67d5dff7a81f4c988f9a8a5c363a1, type: 3}
   onDeath:
     m_PersistentCalls:
@@ -193,6 +193,7 @@ MonoBehaviour:
   updateRotation: 1
   overrideRotation: 0
   overrideRotationValue: 0
+  spiral: 0
   chargeDuration: 1.5
   chargeFx: {fileID: 6374702260404237361, guid: 24f9bcf8c81804f45b6299227d70caaa, type: 3}
   chargeFx2: {fileID: 456534354621891579, guid: db6b79fbe8db81549aa381c85b9d09b2, type: 3}
@@ -250,7 +251,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7444476769540501025}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -261,7 +262,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &7444476769540501214
 CircleCollider2D:
@@ -291,12 +292,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e011c3a6fecd22f46a56c9f78de76d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8395570440804887911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7059406887791371886}
+  - component: {fileID: 8530490640945302499}
+  m_Layer: 10
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7059406887791371886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395570440804887911}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7754156223521474856}
+  m_Father: {fileID: 7444476769540501027}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8530490640945302499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395570440804887911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c757cd05f5b4b64d86a4645261c844f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 7754156223521474870}
 --- !u!1001 &6862444311766393439
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7444476769540501027}
+    m_TransformParent: {fileID: 7059406887791371886}
     m_Modifications:
     - target: {fileID: 3792031705080900457, guid: 9960708f7fb769b40ac60c030fbcb10d, type: 3}
       propertyPath: m_SortingLayer
@@ -340,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3792031705080900471, guid: 9960708f7fb769b40ac60c030fbcb10d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.754
+      value: 0.7540002
       objectReference: {fileID: 0}
     - target: {fileID: 3792031705080900471, guid: 9960708f7fb769b40ac60c030fbcb10d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -381,24 +428,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3792031705080900471, guid: 9960708f7fb769b40ac60c030fbcb10d, type: 3}
   m_PrefabInstance: {fileID: 6862444311766393439}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7754156223521474857 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3792031705080900470, guid: 9960708f7fb769b40ac60c030fbcb10d, type: 3}
-  m_PrefabInstance: {fileID: 6862444311766393439}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2888609964886766285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7754156223521474857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c757cd05f5b4b64d86a4645261c844f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite: {fileID: 7754156223521474870}
 --- !u!212 &7754156223521474870 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3792031705080900457, guid: 9960708f7fb769b40ac60c030fbcb10d, type: 3}

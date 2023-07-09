@@ -93,8 +93,8 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Offset: 39.2
-    - _OffsetRatio: 4
+    - _Offset: 26
+    - _OffsetRatio: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

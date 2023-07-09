@@ -51,9 +51,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 3347773969675875947}
   damage: 10
-  speed: 14
+  speed: 17
   lifetime: 3
-  knockback: 5
+  knockback: 8
   acceleration: 0.1
   spawnFx: {fileID: 0}
   despawnFx: {fileID: 456534354621891579, guid: dcb8c90eb86bf464b91a8b0c9ffb84a6, type: 3}
@@ -312,7 +312,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3347773970757451781}
   - component: {fileID: 3347773970757451778}
-  - component: {fileID: 3347773970757451779}
   m_Layer: 0
   m_Name: Renderer
   m_TagString: Untagged
@@ -387,16 +386,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3347773970757451779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3347773970757451780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a409bf8c503b91346acbdf483c7e1e81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 300

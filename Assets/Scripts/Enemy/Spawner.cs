@@ -32,6 +32,7 @@ public class Spawner : MonoBehaviour {
     public bool updateRotation = false;
     public bool overrideRotation = false;
     public float overrideRotationValue = 0f;
+    public float spiral = 0f;
 
     public float chargeDuration = -1;
     public GameObject chargeFx, chargeFx2;
@@ -57,14 +58,14 @@ public class Spawner : MonoBehaviour {
             if (destroyOnStop) Destroy(gameObject);
             else enabled = false;
         }
-        else _reload = reloadTime * firstReloadMultiplier;
+        else _reload = reloadTime * firstReloadMultiplier * GameManager.main.reloadMultiplier;
     }
 
     private void Update() {
         _reload -= Time.deltaTime;
         if (_reload <= 0) {
             Spawn(emitter, 0f);
-            _reload = reloadTime;
+            _reload = reloadTime * GameManager.main.reloadMultiplier;
         }
     }
 
@@ -107,6 +108,7 @@ public class Spawner : MonoBehaviour {
                     yield return new WaitForSeconds(e.interval);
                 }
             }
+            _rotation += spiral;
         }
 
         onSpawnEnd.Invoke();
@@ -132,7 +134,7 @@ public class Spawner : MonoBehaviour {
             if (destroyOnStop) Destroy(gameObject);
             else enabled = false;
         }
-        else _reload = reloadTime * firstReloadMultiplier;
+        else _reload = reloadTime * firstReloadMultiplier * GameManager.main.reloadMultiplier;
     }
 
     IEnumerator ISpawnNested(NestedSpawnData[] emitter, float angleOffset) {

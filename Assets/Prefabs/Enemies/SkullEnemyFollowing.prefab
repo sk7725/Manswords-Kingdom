@@ -133,9 +133,13 @@ MonoBehaviour:
     startDelay: 0.7
     subemitters: []
   reloadTime: 5
+  firstReloadMultiplier: 0.4
   repeat: 1
   destroyOnStop: 0
   updateRotation: 0
+  overrideRotation: 0
+  overrideRotationValue: 0
+  spiral: 0
   chargeDuration: 1
   chargeFx: {fileID: 6374702260404237361, guid: 52e95a4d30e914341a5d090276c3e0cb, type: 3}
   chargeFx2: {fileID: 456534354621891579, guid: 8fed456c530863d47849309fe41ea2d7, type: 3}
@@ -217,7 +221,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721472424958013478}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -228,7 +232,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &1721472424958013476
 CircleCollider2D:
@@ -245,7 +249,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.5
 --- !u!114 &1721472424958013477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,7 +309,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.7
 --- !u!1001 &1721472425285822619
 PrefabInstance:
   m_ObjectHideFlags: 0
