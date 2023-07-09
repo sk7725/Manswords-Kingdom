@@ -19,4 +19,8 @@ public static class Extensions {
             v.z
         );
     }
+
+    public static GameObject PlayFx(this GameObject go, GameObject fxPrefab) {
+        return Fx.Play(fxPrefab, go.transform.position, go.transform.rotation);
+    }
 }

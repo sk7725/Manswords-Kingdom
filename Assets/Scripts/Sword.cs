@@ -5,4 +5,8 @@ using UnityEngine;
 public class Sword : MonoBehaviour {
     public Rigidbody2D rigid;
     public SwordRenderer render;
+
+    public void Hit() {
+        //todo sound
+    }
 }

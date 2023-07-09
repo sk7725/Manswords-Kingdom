@@ -71,8 +71,8 @@ public class ControlPoint : MonoBehaviour {
         //drag
         if (mouseDown) {
             rigid.position = CursorPosition();
-            line.SetPosition(0, sword.transform.position);
-            line.SetPosition(1, rigid.position);
+            line.SetPosition(1, sword.transform.position);
+            line.SetPosition(0, rigid.position);
         }
 
         //focus
