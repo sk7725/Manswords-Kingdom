@@ -9337,7 +9337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 1011987699}
   render: {fileID: 1729391860}
-  maxHealth: 10000
+  maxHealth: 100
   minimumDamageThreshold2: 200
   velocityDamageScale: 0.2
   velocityDamageStart: 10
