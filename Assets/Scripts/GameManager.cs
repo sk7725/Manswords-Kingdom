@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 
     public ControlPoint control;
     public Player player;
+    public FocusManager focus;
 
     public float reloadMultiplier = 2.5f;
 
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void GameOver() {
+        focus.enabled = false;
         Time.timeScale = 0f;
         control.gameObject.SetActive(false);
         StartCoroutine(IGameOver());

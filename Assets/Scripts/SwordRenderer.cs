@@ -7,24 +7,33 @@ public class SwordRenderer : MonoBehaviour {
     public SpriteRenderer outline;
     public SpriteRenderer arrow;
 
+    [SerializeField] private Material normalMaterial, focusMaterial;
+
     private void Start() {
-        outline.color = Color.black;
+        outline.sharedMaterial.color = Color.black;
     }
 
     private void Update() {
         switch (GameManager.main.control.State) {
             case ControlPoint.ControlState.Idle:
-                outline.color = Color.black;
+                outline.sharedMaterial.color = Color.black;
                 break;
             case ControlPoint.ControlState.Drag:
-                outline.color = GameManager.main.control.dragColor;
+                outline.sharedMaterial.color = GameManager.main.control.dragColor;
                 break;
             case ControlPoint.ControlState.Shift:
-                outline.color = GameManager.main.control.shiftColor;
+                outline.sharedMaterial.color = GameManager.main.control.shiftColor;
                 break;
             case ControlPoint.ControlState.Focus:
-                outline.color = GameManager.main.control.focusColor;
+                outline.sharedMaterial.color = GameManager.main.control.focusColor;
                 break;
+        }
+
+        if (GameManager.main.control.State == ControlPoint.ControlState.Focus) {
+            sprite.sharedMaterial = focusMaterial;
+        }
+        else {
+            sprite.sharedMaterial = normalMaterial;
         }
     }
 }

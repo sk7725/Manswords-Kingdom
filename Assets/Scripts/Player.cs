@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     public float velocityDamageScale = 5f;
     public float velocityDamageStart = 15f;
     public float velocityDamageMax = 30f;
+    public float invincibilityTime = 0.5f;
 
     [Header("Fx")]
     [SerializeField] private GameObject damageFx;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour {
 
     private int hp = 100;
     private bool dead = false;
+    private float invincibility = 0f;
 
     public int Health => hp;
     public float HealthFraction {
@@ -29,15 +31,19 @@ public class Player : MonoBehaviour {
     private void Start() {
         hp = maxHealth;
         dead = false;
+        invincibility = 0f;
     }
 
     private void Update() {
-        //Debug.Log($"VEL: {rigid.velocity.sqrMagnitude} DMG: {GetVelocityDamage()}");
+        if(invincibility > 0) {
+            invincibility -= Time.unscaledDeltaTime;
+        }
     }
 
     public void Damage(int damage, Vector3? point = null) {
-        if (dead) return;
+        if (dead || invincibility > 0) return;
         hp -= damage;
+        invincibility = invincibilityTime;
 
         if (point.HasValue) {
             Fx.Play(damageFx, point.Value);

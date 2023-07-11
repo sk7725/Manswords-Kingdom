@@ -7,7 +7,8 @@ public class ControlPoint : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private float dragPower = 10000;
     [SerializeField] private float shiftPower = 2000;
-    [SerializeField] private float focusSpeed = 60f;
+    [SerializeField] private float focusPower = 1000;
+    [ColorUsage(true, true)]
     public Color dragColor = Color.cyan, shiftColor = Color.yellow, focusColor = Color.red;
 
     [Header("Physics")]
@@ -51,17 +52,18 @@ public class ControlPoint : MonoBehaviour {
 
         //set state
         bool mouseDown = IsMouseDown();
-        if (mouseDown) {
-            if (IsShiftDown()) {
-                state = ControlState.Shift;
-            }
-            else {
-                state = ControlState.Drag;
-            }
+        if (IsFocusDown()) {
+            mouseDown = true;
+            state = ControlState.Focus;
         }
         else {
-            if (IsFocusDown()) {
-                state = ControlState.Focus;
+            if (mouseDown) {
+                if (IsShiftDown()) {
+                    state = ControlState.Shift;
+                }
+                else {
+                    state = ControlState.Drag;
+                }
             }
             else {
                 state = ControlState.Idle;
@@ -75,6 +77,7 @@ public class ControlPoint : MonoBehaviour {
             line.SetPosition(0, rigid.position);
         }
 
+        /*
         //focus
         if(state == ControlState.Focus) {
             float target = Vector2.SignedAngle(Vector2.right, CursorPosition() - sword.transform.position);
@@ -91,11 +94,10 @@ public class ControlPoint : MonoBehaviour {
         }
         else {
             sword.render.arrow.enabled = false;
-        }
+        }*/
 
         //drag power and ui
         switch (state) {
-            case ControlState.Focus:
             case ControlState.Idle:
                 SetDragPower(0);
                 line.enabled = false;
@@ -110,6 +112,11 @@ public class ControlPoint : MonoBehaviour {
                 line.enabled = true;
                 SetLineColor(shiftColor);
                 break;
+            case ControlState.Focus:
+                SetDragPower(focusPower);
+                line.enabled = true;
+                SetLineColor(focusColor);
+                break;
         }
     }
 
@@ -123,8 +130,7 @@ public class ControlPoint : MonoBehaviour {
     }
 
     private bool IsFocusDown() {
-        //return !mouseOverUI && Input.GetMouseButton(1);
-        return false;
+        return !mouseOverUI && Input.GetMouseButton(1) && GameManager.main.focus.CanFocus();
     }
 
     private bool IsShiftDown() {
@@ -136,6 +142,6 @@ public class ControlPoint : MonoBehaviour {
     }
 
     private void SetLineColor(Color color) {
-        line.startColor = line.endColor = color;
+        line.sharedMaterial.color = color;
     }
 }
