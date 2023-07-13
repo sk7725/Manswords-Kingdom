@@ -105,7 +105,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void End() {
-        //todo show gameover UI
         gameOverPanel.SetActive(true);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 public class FocusManager : MonoBehaviour {
@@ -24,17 +25,33 @@ public class FocusManager : MonoBehaviour {
     private float focusHeat = 0f;
     private float mana = 0f;
     private float lastMana = 0f;
+    [System.NonSerialized] public int combo = 0;
+    private bool wasFocusing = false;
+
+    public ParryComboEvent onParryCombo = new();
+
+    public class ParryComboEvent : UnityEvent<int> { }
 
     private void Start() {
         mana = lastMana = 0f;
         focusHeat = 0f;
+        combo = 0;
+        wasFocusing = false;
     }
 
     private void Update() {
-        if (!IsFocusing) lastMana = mana;
-        else {
-            mana -= Time.unscaledDeltaTime * manaUse;
+        if (!IsFocusing) {
+            if (wasFocusing) {
+                EndManaCombo();
+            }
+
+            lastMana = mana;
+            combo = 0;
         }
+        else {
+            mana -= Time.unscaledDeltaTime * manaUse * Mathf.Max(0.2f, focusHeat);
+        }
+        wasFocusing = IsFocusing;
 
         focusHeat = Mathf.Lerp(focusHeat, IsFocusing ? 1f : 0f, focusLerpTime * Time.unscaledDeltaTime);
         if (focusHeat < 0.001f && !IsFocusing) focusHeat = 0;
@@ -55,5 +72,15 @@ public class FocusManager : MonoBehaviour {
         mana += amount;
         if (mana > maxMana) mana = maxMana;
         if (IsFocusing && mana > lastMana) mana = lastMana;
+    }
+
+    public void RegisterCombo() {
+        if (!IsFocusing) return;
+        combo++;
+        onParryCombo.Invoke(combo);
+    }
+
+    private void EndManaCombo() {
+        GameManager.main.control.sword.EndManaCombo(combo);
     }
 }

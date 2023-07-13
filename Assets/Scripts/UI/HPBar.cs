@@ -14,7 +14,7 @@ public class HPBar : MonoBehaviour {
 
     void Update() {
         float f = GameManager.main.player.HealthFraction;
-        if (f >= lastHealth) lastHealth = f;
+        if (f >= lastHealth || f <= 0) lastHealth = f;
         else lastHealth = Mathf.Lerp(lastHealth, f, Time.deltaTime * 6f);
 
         hpBar.fillAmount = f;

@@ -75,15 +75,27 @@ public class Enemy : MonoBehaviour {
             player.rigid.velocity = (player.transform.position - transform.position).normalized * knockback;
         }
         else {
-            health -= dmg;
-            //take knockback
-            vel = player.rigid.velocity.normalized * selfKnockback;
-            gameObject.PlayFx(hitFx);
-            if (health <= 0) Kill();
-            else {
-                StopAllCoroutines();
-                StartCoroutine(IFlash(Color.white));
-            }
+            ProcessDamage(dmg, player.rigid.velocity.normalized);
+        }
+    }
+
+    public virtual void Damage(float dmg) {
+        ProcessDamage(dmg, Vector2.zero);
+    }
+
+    public virtual void Damage(float dmg, AllyProjectile source) {
+        ProcessDamage(dmg, source.rigid.velocity.normalized);
+    }
+
+    protected virtual void ProcessDamage(float damage, Vector2 knockbackDirection) {
+        health -= damage;
+        //take knockback
+        if(vel.sqrMagnitude > 0.01f) vel = knockbackDirection * selfKnockback;
+        gameObject.PlayFx(hitFx);
+        if (health <= 0) Kill();
+        else {
+            StopAllCoroutines();
+            StartCoroutine(IFlash(Color.white));
         }
     }
 

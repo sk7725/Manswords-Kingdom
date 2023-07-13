@@ -10,5 +10,11 @@ public class Sword : MonoBehaviour {
 
     public void Hit() {
         GameManager.main.focus.AddMana(manaGain);
+        GameManager.main.focus.RegisterCombo();
+    }
+
+    public void EndManaCombo(int combo) {
+        Debug.Log($"Combos: {combo}");
+        //todo
     }
 }
