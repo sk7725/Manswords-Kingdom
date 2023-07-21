@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour {
     public static GameManager main;
@@ -23,6 +24,11 @@ public class GameManager : MonoBehaviour {
     public GameObject summonFx, gameOverPanel;
     [SerializeField] private GameObject swordDeathFx;
     [SerializeField] private float deathDelay = 0.9f;
+
+    public GameOverEvent onGameOver = new();
+
+    [System.Serializable]
+    public class GameOverEvent: UnityEvent { }
 
     private float waveStandby = 0;
 
@@ -93,6 +99,7 @@ public class GameManager : MonoBehaviour {
         focus.enabled = false;
         Time.timeScale = 0f;
         control.gameObject.SetActive(false);
+        onGameOver.Invoke();
         StartCoroutine(IGameOver());
     }
 

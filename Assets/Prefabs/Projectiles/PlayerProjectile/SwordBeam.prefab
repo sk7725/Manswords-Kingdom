@@ -9,18 +9,18 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4658854795087231414}
-  - component: {fileID: 4658854795087231415}
+  - component: {fileID: 4842465184712331429}
   - component: {fileID: 4658854795087231416}
-  - component: {fileID: 4658854795087231417}
   - component: {fileID: 4658854795087231418}
   - component: {fileID: 4658854795087231419}
+  - component: {fileID: 4574589181002287652}
   m_Layer: 0
-  m_Name: PlayerMissile
+  m_Name: SwordBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4658854795087231414
 Transform:
   m_ObjectHideFlags: 0
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4658854795087231415
+--- !u!114 &4842465184712331429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,18 +46,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4658854795087231420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eee059d01e330f4eb060f2f1edffbf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 077bfd1aa63c59147837f7049edecce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 4658854795087231416}
-  damage: 10
-  speed: 17
-  lifetime: 3
-  knockback: 8
-  acceleration: 0.1
+  damage: 60
+  speed: 16
+  lifetime: 5
+  knockback: 5
+  acceleration: 3
+  penetrate: 10
   spawnFx: {fileID: 0}
-  despawnFx: {fileID: 456534354621891579, guid: dcb8c90eb86bf464b91a8b0c9ffb84a6, type: 3}
-  hitSwordFx: {fileID: 456534354621891579, guid: dc62a40d18dde3a4a8d1d31c5a452e4e, type: 3}
+  despawnFx: {fileID: 456534354621891579, guid: e10b289f998671241851a5c8ea66871e, type: 3}
   onDespawn:
     m_PersistentCalls:
       m_Calls: []
@@ -82,22 +82,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &4658854795087231417
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4658854795087231420}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.3
 --- !u!96 &4658854795087231418
 TrailRenderer:
   serializedVersion: 2
@@ -216,9 +200,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 2297344419095719125, guid: 196b5e291d3e0f640b8cd51a1f9c65cd, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 2b64cf7da2c1cd14185eb67cf944b34d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 01bfb42319f0dbb44a3ac593db0164a3, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.774
+  m_Volume: 0.166
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -302,6 +286,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!61 &4574589181002287652
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4658854795087231420}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.10783155, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0743369, y: 0.4}
+  m_EdgeRadius: 0
 --- !u!1 &4658854796291005424
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,8 +384,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1540637989
   m_SortingLayer: 4
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 91beefa34ba743d4fb08285ea7a976ec, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: b225fac2c840cbb44a791972dd9e23fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

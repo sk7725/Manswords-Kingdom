@@ -11,6 +11,7 @@ public class AllyProjectile : MonoBehaviour {
     [SerializeField] private float lifetime = 3f;
     [SerializeField] private float knockback = 5f;
     [SerializeField] private float acceleration = -1f;
+    [SerializeField] private int penetrate = 1;
 
     [Header("Fx")]
     [SerializeField] private GameObject spawnFx;
@@ -20,12 +21,13 @@ public class AllyProjectile : MonoBehaviour {
     [SerializeField] private AllyProjectileDespawnEvent onDespawn = new();
 
     private float time = 0f;
+    private int penetrateCount = 0;
 
     [System.Serializable]
     public class AllyProjectileDespawnEvent : UnityEvent { }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.CompareTag("EnemyProjectile")) {
+        if (collision.gameObject.CompareTag("Enemy")) {
             Hit(collision.gameObject.transform.GetComponentInParent<Enemy>());
         }
         else if (collision.gameObject.CompareTag("Ground")) {
@@ -50,7 +52,8 @@ public class AllyProjectile : MonoBehaviour {
 
     public virtual void Hit(Enemy enemy) {
         //todo
-        Despawn();
+        penetrateCount++;
+        if(penetrateCount >= penetrate) Despawn();
     }
 
     public virtual void HitGround() {

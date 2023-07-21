@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c60149f13680e48bf6ddabe2b94f8b, type: 3}
+  m_Name: SwordRingSkill
+  m_EditorClassIdentifier: 
+  maxCombo: 15
+  emitter:
+  - prefab: {fileID: 4658854795087231420, guid: 00ea82e935bdf6245a4a4293e74aad47, type: 3}
+    shots:
+      scale: 2
+      baseValue: 0
+      maxValue: 20
+    spread:
+      mode: 2
+      scale: 180
+      baseValue: 0
+      maxValue: 360
+    interval:
+      mode: 0
+      scale: 0
+      baseValue: 0
+      maxValue: 0
+    startDelay:
+      mode: 0
+      scale: 0
+      baseValue: 0
+      maxValue: 0
+    subemitters: []
+  overrideRotation: 0
+  overrideRotationValue: 0
+  spiral: 0
